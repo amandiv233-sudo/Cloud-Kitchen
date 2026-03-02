@@ -42,16 +42,21 @@ export default function LoginPage() {
                 .eq('id', data.user.id)
                 .single();
 
-            if (profile?.role === 'admin') {
-                router.push('/admin/categories'); // Admin goes to admin panel
-            } else if (profile?.role === 'chef') {
-                router.push('/kitchen'); // Chef goes directly to kitchen
-            } else if (profile?.role === 'sales') {
-                router.push('/sales'); // Sales goes to sales
-            } else if (profile?.role === 'delivery') {
-                router.push('/delivery'); // Delivery goes to delivery
+            if (profile) {
+                const userRole = String(profile.role);
+                if (userRole === 'admin') {
+                    router.push('/admin/categories'); // Admin goes to admin panel
+                } else if (userRole === 'chef') {
+                    router.push('/kitchen'); // Chef goes directly to kitchen
+                } else if (userRole === 'sales') {
+                    router.push('/sales'); // Sales goes to sales
+                } else if (userRole === 'delivery') {
+                    router.push('/delivery'); // Delivery goes to delivery
+                } else {
+                    router.push('/'); // Customers go back to home page
+                }
             } else {
-                router.push('/'); // Customers go back to home page
+                router.push('/');
             }
         }
         setLoading(false);

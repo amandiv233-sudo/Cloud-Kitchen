@@ -88,7 +88,7 @@ export default function AdminOverviewPage() {
             .limit(5);
 
         if (recent && recent.length > 0) {
-            const userIds = [...new Set(recent.map(o => o.user_id))];
+            const userIds = Array.from(new Set(recent.map(o => o.user_id)));
             const { data: profiles } = await supabase
                 .from('profiles')
                 .select('id, full_name')
