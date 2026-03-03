@@ -42,6 +42,7 @@ export interface Database {
         }
         Relationships: []
       }
+
       menu_items: {
         Row: {
           id: string
@@ -88,6 +89,7 @@ export interface Database {
           }
         ]
       }
+
       orders: {
         Row: {
           id: string
@@ -128,6 +130,7 @@ export interface Database {
           }
         ]
       }
+
       profiles: {
         Row: {
           id: string
@@ -135,7 +138,7 @@ export interface Database {
           phone: string | null
           address: string | null
           avatar_url: string | null
-          role: 'customer' | 'admin'
+          role: 'customer' | 'chef' | 'sales' | 'delivery' | 'admin'
         }
         Insert: {
           id: string
@@ -143,7 +146,7 @@ export interface Database {
           phone?: string | null
           address?: string | null
           avatar_url?: string | null
-          role?: 'customer' | 'admin'
+          role?: 'customer' | 'chef' | 'sales' | 'delivery' | 'admin'
         }
         Update: {
           id?: string
@@ -151,17 +154,20 @@ export interface Database {
           phone?: string | null
           address?: string | null
           avatar_url?: string | null
-          role?: 'customer' | 'admin'
+          role?: 'customer' | 'chef' | 'sales' | 'delivery' | 'admin'
         }
         Relationships: []
       }
     }
+
     Views: {
       [_ in never]: never
     }
+
     Functions: {
       [_ in never]: never
     }
+
     Enums: {
       [_ in never]: never
     }
