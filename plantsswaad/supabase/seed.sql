@@ -1,0 +1,2 @@
+-- This file is intentionally left blank.
+-- All data is completely dynamic and controlled by the Admin dashboard.

@@ -1,0 +1,5 @@
+﻿src/app/admin/orders/page.tsx(49,33): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+src/app/admin/staff/page.tsx(29,68): error TS2322: Type 'string' is not assignable to type '"customer" | "admin" | undefined'.
+src/components/ui/button.tsx(3,40): error TS2307: Cannot find module 'class-variance-authority' or its corresponding type declarations.
+src/components/ui/button.tsx(43,17): error TS2339: Property 'variant' does not exist on type 'ButtonProps'.
+src/components/ui/button.tsx(43,26): error TS2339: Property 'size' does not exist on type 'ButtonProps'.
