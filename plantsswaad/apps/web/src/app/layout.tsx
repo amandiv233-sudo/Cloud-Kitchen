@@ -77,6 +77,7 @@ export const metadata: Metadata = {
 
 import { CartDrawer } from '@/components/CartDrawer';
 import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 export default function RootLayout({
   children,
@@ -164,6 +165,7 @@ export default function RootLayout({
         <main className="flex-grow pt-24">
           {children}
         </main>
+        <Footer />
         <CartDrawer />
       </body>
     </html>

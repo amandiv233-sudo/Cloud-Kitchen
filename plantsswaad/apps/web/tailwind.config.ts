@@ -20,6 +20,7 @@ const config: Config = {
           700: '#2b5b49',
           800: '#24493c',
           900: '#1e3d33',
+          950: '#111f1a',  // Near-black for footer
         },
         earth: {
           50: '#faf7f3',

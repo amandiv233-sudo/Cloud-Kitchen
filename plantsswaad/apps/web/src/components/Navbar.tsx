@@ -21,6 +21,8 @@ export function Navbar() {
                     <div className="flex items-center space-x-2 md:space-x-6">
                         <Link href="/" className="hidden md:block text-nature-600 font-medium hover:text-nature-800 transition">Home</Link>
                         <Link href="/menu" className="hidden md:block text-nature-600 font-medium hover:text-nature-800 transition">Menu</Link>
+                        <Link href="/areas" className="hidden md:block text-nature-600 font-medium hover:text-nature-800 transition">Delivery Areas</Link>
+                        <Link href="/faq" className="hidden md:block text-nature-600 font-medium hover:text-nature-800 transition">FAQ</Link>
                         <ProfileButton />
                     </div>
                 </div>
