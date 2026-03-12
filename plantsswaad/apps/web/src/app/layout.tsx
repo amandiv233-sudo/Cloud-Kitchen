@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 
 const inter = Inter({
@@ -161,6 +162,22 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col font-sans selection:bg-nature-500 selection:text-white">
+        {/* Google Analytics 4 — G-PST1WK4X7M */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-PST1WK4X7M"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PST1WK4X7M', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+
         <Navbar />
         <main className="flex-grow pt-24">
           {children}
