@@ -1,7 +1,21 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CategoryOrbit } from '@/components/CategoryOrbit';
 import { FeaturedItems } from '@/components/FeaturedItems';
+
+export const metadata: Metadata = {
+  title: 'Online Food Delivery in Bhagalpur | PlanetsSwaad Cloud Kitchen',
+  description:
+    'Order food online from PlanetsSwaad — Bhagalpur\'s fastest cloud kitchen. 100% pure veg North Indian meals, biryani, thali & tiffin delivered to your door. Swad jo dil ko chhoo jaye!',
+  alternates: { canonical: 'https://planetsswaad.netlify.app/' },
+  openGraph: {
+    title: 'PlanetsSwaad | #1 Cloud Kitchen Food Delivery Bhagalpur Bihar',
+    description: 'Bhagalpur\'s favourite cloud kitchen. Order hot, fresh, 100% veg food delivered fast!',
+    url: 'https://planetsswaad.netlify.app/',
+  },
+};
+
 
 export default function HomePage() {
   return (
