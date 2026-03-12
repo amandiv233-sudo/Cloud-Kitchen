@@ -108,19 +108,19 @@ export default function AdminCategories() {
                             <input required type="text" value={form.name} onChange={e => {
                                 const newName = e.target.value;
                                 setForm({ ...form, name: newName, slug: editingId ? form.slug : newName.toLowerCase().replace(/[^a-z0-9]+/g, '-') })
-                            }} className="w-full border border-gray-300 rounded-md p-2" />
+                            }} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-nature-700 mb-1">Slug</label>
-                            <input required type="text" value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <input required type="text" value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div className="col-span-2">
                             <label className="block text-sm font-medium text-nature-700 mb-1">Image URL</label>
-                            <input type="text" value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <input type="text" value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div className="col-span-2">
                             <label className="block text-sm font-medium text-nature-700 mb-1">Description</label>
-                            <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div className="flex items-center gap-2">
                             <input type="checkbox" checked={form.is_active} onChange={e => setForm({ ...form, is_active: e.target.checked })} id="is_active" />
@@ -128,7 +128,7 @@ export default function AdminCategories() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-nature-700 mb-1">Sort Order</label>
-                            <input type="number" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: parseInt(e.target.value) })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <input type="number" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: parseInt(e.target.value) })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                     </div>
                     <div className="mt-4 flex justify-end">

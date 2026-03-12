@@ -118,26 +118,26 @@ export default function AdminMenuItems() {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-nature-700 mb-1">Name</label>
-                            <input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-nature-700 mb-1">Category</label>
-                            <select required value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })} className="w-full border border-gray-300 rounded-md p-2">
+                            <select required value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400">
                                 <option value="" disabled>Select Category</option>
                                 {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
                             </select>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-nature-700 mb-1">Price (₹)</label>
-                            <input required type="number" value={form.price} onChange={e => setForm({ ...form, price: parseFloat(e.target.value) })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <input required type="number" value={form.price} onChange={e => setForm({ ...form, price: parseFloat(e.target.value) })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-nature-700 mb-1">Image URL</label>
-                            <input type="text" value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <input type="text" value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div className="col-span-2">
                             <label className="block text-sm font-medium text-nature-700 mb-1">Description</label>
-                            <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full border border-gray-300 rounded-md p-2" />
+                            <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full border border-gray-300 rounded-md p-2 bg-white text-gray-900 placeholder-gray-400" />
                         </div>
                         <div className="flex items-center gap-6 col-span-2">
                             <div className="flex items-center gap-2">

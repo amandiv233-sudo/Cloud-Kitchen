@@ -68,3 +68,22 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
+
+/* ── Admin form fields: always readable ── */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+select,
+textarea {
+  background-color: #ffffff !important;
+  color: #111827 !important;          /* gray-900 */
+  border-color: #d1d5db;              /* gray-300 */
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;          /* gray-400 */
+}
