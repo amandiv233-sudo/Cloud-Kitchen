@@ -74,6 +74,9 @@ export const metadata: Metadata = {
     canonical: 'https://planetsswaad.netlify.app',
   },
   category: 'food',
+  verification: {
+    google: 'google7097484d9b59deef',
+  },
 };
 
 import { CartDrawer } from '@/components/CartDrawer';
