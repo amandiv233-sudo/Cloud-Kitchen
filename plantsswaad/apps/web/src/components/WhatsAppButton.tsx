@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export function WhatsAppButton() {
     const [isExpanded, setIsExpanded] = useState(false);
-    const phoneNumber = '917061545199'; // PlanetsSwaad contact
+    const phoneNumber = '919110922303'; // PlanetsSwaad business number
 
     const defaultMessage = encodeURIComponent(
         '🍽️ Hi PlanetsSwaad!\n\nI\'d like to place an order.\n\n📍 My Area: \n🍛 Items: \n\nPlease confirm availability!'
