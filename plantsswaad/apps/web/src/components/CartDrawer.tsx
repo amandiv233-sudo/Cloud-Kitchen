@@ -6,6 +6,12 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 
+declare global {
+    interface Window {
+        Razorpay: any;
+    }
+}
+
 export function CartDrawer() {
     const [isOpen, setIsOpen] = useState(false);
     const { items, removeItem, getTotal, clearCart } = useCartStore();
@@ -13,11 +19,72 @@ export function CartDrawer() {
     const [address, setAddress] = useState('');
     const [fullName, setFullName] = useState('');
     const [phone, setPhone] = useState('');
+    const [razorpayLoaded, setRazorpayLoaded] = useState(false);
     const router = useRouter();
+
+    const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
+
+    const openRazorpayPopup = (orderId: string, totalAmount: number) => {
+        return new Promise<{ paymentId: string; orderId: string }>((resolve, reject) => {
+            if (!window.Razorpay) {
+                reject(new Error('Razorpay SDK not loaded. Please refresh and try again.'));
+                return;
+            }
+
+            const options = {
+                key: RAZORPAY_KEY_ID,
+                amount: totalAmount * 100, // Razorpay expects amount in paise
+                currency: 'INR',
+                name: 'PlanetsSwaad',
+                description: `Order #${orderId.split('-')[0]}`,
+                image: '/logo.png',
+                handler: function (response: any) {
+                    resolve({
+                        paymentId: response.razorpay_payment_id,
+                        orderId: orderId,
+                    });
+                },
+                prefill: {
+                    name: fullName,
+                    contact: phone,
+                },
+                notes: {
+                    order_id: orderId,
+                    delivery_address: address,
+                },
+                theme: {
+                    color: '#468f71', // nature-500 brand green
+                },
+                modal: {
+                    ondismiss: function () {
+                        reject(new Error('Payment cancelled by user'));
+                    },
+                },
+            };
+
+            const rzp = new window.Razorpay(options);
+
+            rzp.on('payment.failed', function (response: any) {
+                reject(new Error(response.error?.description || 'Payment failed'));
+            });
+
+            rzp.open();
+        });
+    };
 
     const handleCheckout = async () => {
         if (!address || !fullName || !phone) {
             alert('Please fill out all delivery details.');
+            return;
+        }
+
+        if (!RAZORPAY_KEY_ID) {
+            alert('Payment gateway is not configured. Please contact support.');
+            return;
+        }
+
+        if (!razorpayLoaded || !window.Razorpay) {
+            alert('Payment gateway is still loading. Please wait a moment and try again.');
             return;
         }
 
@@ -30,7 +97,7 @@ export function CartDrawer() {
             // 2. Perform Guest SILENT Login/Signup if no session
             if (sessionError || !session?.user) {
                 const simulatedEmail = `${phone}.swaad@gmail.com`;
-                const dummyPassword = 'GuestOrder2024!'; // Shared password for friction-less guest checkouts
+                const dummyPassword = 'GuestOrder2024!';
 
                 let authResult = await supabase.auth.signUp({
                     email: simulatedEmail,
@@ -39,7 +106,6 @@ export function CartDrawer() {
                 });
 
                 if (authResult.error && authResult.error.message.includes('already registered')) {
-                    // Try signing in instead if they ordered before as guest
                     authResult = await supabase.auth.signInWithPassword({
                         email: simulatedEmail,
                         password: dummyPassword,
@@ -55,7 +121,7 @@ export function CartDrawer() {
 
             if (!session?.user?.id) throw new Error("Authentication failed");
 
-            // 3. Insert the real order into Supabase
+            // 3. Insert the order into Supabase with 'Pending' payment
             const { data: orderData, error: orderError } = await supabase
                 .from('orders')
                 .insert([
@@ -73,23 +139,51 @@ export function CartDrawer() {
 
             if (orderError) throw orderError;
 
-            // 4. Simulated Razorpay Integration for Local Testing
-            // We use a timeout to mock network latency for the payment gateway
-            setTimeout(async () => {
-                const isSuccess = Math.random() > 0.1; // 90% success rate mock
-                
-                if (isSuccess) {
-                    alert(`✅ Payment Successful!\nOrder ID: ${orderData.id.split('-')[0]}\nTotal Paid: ₹${getTotal()}`);
-                    await supabase.from('orders').update({ payment_status: 'Paid' }).eq('id', orderData.id);
-                    clearCart();
-                    setIsOpen(false);
-                    router.push('/profile');
+            // 4. Open Razorpay payment popup
+            try {
+                const paymentResult = await openRazorpayPopup(orderData.id, getTotal());
+
+                // 5. Payment successful — update order in Supabase
+                await supabase
+                    .from('orders')
+                    .update({
+                        payment_status: 'Paid',
+                        payment_id: paymentResult.paymentId,
+                    })
+                    .eq('id', orderData.id);
+
+                alert(
+                    `✅ Payment Successful!\n` +
+                    `Order ID: ${orderData.id.split('-')[0]}\n` +
+                    `Payment ID: ${paymentResult.paymentId}\n` +
+                    `Total Paid: ₹${getTotal()}`
+                );
+
+                clearCart();
+                setIsOpen(false);
+                setAddress('');
+                setFullName('');
+                setPhone('');
+                router.push('/profile');
+
+            } catch (paymentError: any) {
+                // Payment failed or was cancelled
+                if (paymentError.message === 'Payment cancelled by user') {
+                    // User closed the popup — mark as cancelled
+                    await supabase
+                        .from('orders')
+                        .update({ payment_status: 'Cancelled' })
+                        .eq('id', orderData.id);
+                    alert('Payment was cancelled. Your order has been saved — you can retry anytime.');
                 } else {
-                    alert('❌ Payment Failed: Insufficient mock funds.');
-                    await supabase.from('orders').update({ payment_status: 'Failed' }).eq('id', orderData.id);
-                    setIsCheckingOut(false);
+                    // Actual payment failure
+                    await supabase
+                        .from('orders')
+                        .update({ payment_status: 'Failed' })
+                        .eq('id', orderData.id);
+                    alert(`❌ Payment Failed: ${paymentError.message}`);
                 }
-            }, 1500);
+            }
 
         } catch (error: any) {
             console.error('Checkout error:', error);
@@ -101,6 +195,13 @@ export function CartDrawer() {
 
     return (
         <>
+            {/* Load Razorpay SDK */}
+            <Script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                strategy="lazyOnload"
+                onLoad={() => setRazorpayLoaded(true)}
+            />
+
             <button
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-8 right-8 bg-nature-600 text-white p-4 rounded-full shadow-2xl hover:bg-nature-700 transition-all z-50 flex items-center justify-center group"
@@ -200,15 +301,21 @@ export function CartDrawer() {
                         </div>
                         <button
                             onClick={handleCheckout}
-                            disabled={isCheckingOut || address.trim() === ''}
-                            className="w-full py-4 bg-nature-600 hover:bg-nature-700 disabled:bg-nature-300 text-white rounded-xl font-bold text-lg transition-colors flex justify-center items-center"
+                            disabled={isCheckingOut || address.trim() === '' || !fullName.trim() || !phone.trim()}
+                            className="w-full py-4 bg-nature-600 hover:bg-nature-700 disabled:bg-nature-300 text-white rounded-xl font-bold text-lg transition-colors flex justify-center items-center gap-2"
                         >
                             {isCheckingOut ? (
                                 <span className="animate-pulse">Processing Payment...</span>
                             ) : (
-                                'Proceed to Pay via Razorpay'
+                                <>
+                                    <span>Pay ₹{getTotal()} via Razorpay</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                </>
                             )}
                         </button>
+                        <p className="text-xs text-center text-nature-500 mt-3">
+                            🔒 Secured by Razorpay · UPI, Cards, NetBanking accepted
+                        </p>
                     </div>
                 )}
             </div>
