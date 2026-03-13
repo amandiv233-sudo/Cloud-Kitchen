@@ -5,6 +5,7 @@ import { useCartStore } from '@plantsswaad/shared';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
+import { useNotifications } from '@/hooks/useNotifications';
 
 declare global {
     interface Window {
@@ -20,6 +21,7 @@ export function CartDrawer() {
     const [fullName, setFullName] = useState('');
     const [phone, setPhone] = useState('');
     const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+    const { sendLocalNotification } = useNotifications();
     const router = useRouter();
 
     const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
@@ -158,6 +160,13 @@ export function CartDrawer() {
                     `Payment ID: ${paymentResult.paymentId}\n` +
                     `Total Paid: ₹${getTotal()}`
                 );
+
+                // Send push notification
+                sendLocalNotification('🎉 Order Placed Successfully!', {
+                    body: `Your order #${orderData.id.split('-')[0]} of ₹${getTotal()} is confirmed. We're preparing your food now!`,
+                    tag: 'order-placed',
+                    data: { url: '/profile' },
+                });
 
                 clearCart();
                 setIsOpen(false);

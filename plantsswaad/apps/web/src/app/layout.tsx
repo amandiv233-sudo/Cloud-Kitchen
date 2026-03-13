@@ -82,6 +82,8 @@ export const metadata: Metadata = {
 import { CartDrawer } from '@/components/CartDrawer';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import { WhatsAppButton } from '@/components/WhatsAppButton';
+import { NotificationBanner } from '@/components/NotificationBanner';
 
 export default function RootLayout({
   children,
@@ -187,6 +189,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <CartDrawer />
+        <WhatsAppButton />
+        <NotificationBanner />
       </body>
     </html>
   );
