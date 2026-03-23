@@ -199,15 +199,23 @@ export function CartDrawer() {
                     `Please confirm my order.`;
 
                 const whatsappUrl = `https://api.whatsapp.com/send?phone=917061545199&text=${encodeURIComponent(whatsappMsg)}`;
-                window.open(whatsappUrl, '_blank');
-                // ----------------------------------------
-
+                
+                // Cleanup local state
                 clearCart();
                 setIsOpen(false);
                 setAddress('');
                 setFullName('');
                 setPhone('');
-                router.push('/profile');
+                
+                // Use replace to ensure their browser "back" button leads to their fresh profile instead of checking out again
+                router.replace('/profile');
+
+                // 100% reliable bypass for popup blockers (happening after an async stack): 
+                // Directly navigate the current tab utilizing intent links, after a micro-delay.
+                setTimeout(() => {
+                    window.location.href = whatsappUrl;
+                }, 300);
+                // ----------------------------------------
 
             } catch (paymentError: any) {
                 // Payment failed or was cancelled
