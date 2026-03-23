@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useNotifications } from '@/hooks/useNotifications';
+import { processOrderLoyalty } from '@/lib/loyalty';
 
 declare global {
     interface Window {
@@ -154,11 +155,20 @@ export function CartDrawer() {
                     })
                     .eq('id', orderData.id);
 
+                // Process Loyalty Validation
+                const loyaltyResult = await processOrderLoyalty(session.user.id);
+                const rewardText = loyaltyResult?.reward 
+                    ? `\n🎉 LOYALTY REWARD UNLOCKED: ${loyaltyResult.reward.percentage}% OFF!\nUse code ${loyaltyResult.reward.code} on your next order.` 
+                    : loyaltyResult?.stampEarned 
+                        ? `\n🎟️ You earned a Loyalty Stamp today! (Stamps: ${loyaltyResult.currentStamps}, Streak: ${loyaltyResult.currentStreak})` 
+                        : '';
+
                 alert(
                     `✅ Payment Successful!\n` +
                     `Order ID: ${orderData.id.split('-')[0]}\n` +
                     `Payment ID: ${paymentResult.paymentId}\n` +
-                    `Total Paid: ₹${getTotal()}`
+                    `Total Paid: ₹${getTotal()}` +
+                    rewardText
                 );
 
                 // Send push notification

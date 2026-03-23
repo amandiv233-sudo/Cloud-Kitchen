@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { fetchUserLoyaltyInfo } from '@/lib/loyalty';
+import { DownloadInvoiceButton } from '@/components/DownloadInvoiceButton';
 
 interface UserProfile {
     id: string;
@@ -23,6 +25,7 @@ interface Order {
 export default function ProfilePage() {
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [orders, setOrders] = useState<Order[]>([]);
+    const [loyalty, setLoyalty] = useState<{ total_stamps: number, consecutive_streak: number } | null>(null);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -58,6 +61,10 @@ export default function ProfilePage() {
             .order('created_at', { ascending: false });
 
         if (ordersData) setOrders(ordersData as any[]);
+
+        // Fetch Loyalty
+        const loyaltyData = await fetchUserLoyaltyInfo(session.user.id);
+        if (loyaltyData) setLoyalty(loyaltyData);
 
         setLoading(false);
     };
@@ -155,6 +162,42 @@ export default function ProfilePage() {
                                 {updating ? 'Saving...' : 'Save Changes'}
                             </button>
                         </form>
+
+                        {/* Loyalty Ticket Display */}
+                        {loyalty && (
+                            <div className="mt-8 border-2 border-dashed border-earth-300 bg-earth-50 rounded-2xl p-5 mb-10 text-center">
+                                <h3 className="font-display font-bold text-earth-800 text-lg mb-1">Loyalty Ticket 🎟️</h3>
+                                <p className="text-xs text-earth-600 mb-4 max-w-xs mx-auto">
+                                    5 consecutive days = <strong className="text-earth-800">50% OFF</strong><br/>
+                                    5 total days = <strong className="text-earth-800">20% OFF</strong>
+                                </p>
+                                
+                                {/* Total Slots (Non-consecutive fallback) */}
+                                <div className="flex gap-2 justify-center">
+                                    {[1, 2, 3, 4, 5].map((slot) => {
+                                        const isStamped = slot <= loyalty.total_stamps;
+                                        const isStreak = slot <= loyalty.consecutive_streak;
+                                        return (
+                                            <div 
+                                                key={slot} 
+                                                className={`w-12 h-12 rounded-full flex items-center justify-center border-2 shadow-sm 
+                                                    ${isStreak ? 'bg-green-500 border-green-600 text-white shadow-green-500/30' : 
+                                                    isStamped ? 'bg-earth-200 border-earth-400 text-earth-800' : 'bg-white border-dashed border-earth-300'}`}
+                                            >
+                                                {isStamped ? (
+                                                    <span className="text-xl opacity-90" style={{ transform: `rotate(${Math.random() * 30 - 15}deg)` }}>
+                                                        🍃
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-earth-300 text-xs font-bold">{slot}</span>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <p className="text-[10px] text-earth-500 mt-4 italic">Dark green = Active Streak. Order today to keep it alive!</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Order History */}
@@ -186,15 +229,20 @@ export default function ProfilePage() {
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="mt-4 pt-4 border-t border-gray-100">
-                                            <h4 className="text-sm font-medium text-gray-700 mb-2">Items:</h4>
-                                            <ul className="text-sm text-gray-600 space-y-1">
-                                                {order.items.map((item: any, idx: number) => (
-                                                    <li key={idx}>
-                                                        {item.quantity}x {item.name} <span className="text-gray-400 text-xs">(₹{item.price})</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                        <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-end">
+                                            <div>
+                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Items:</h4>
+                                                <ul className="text-sm text-gray-600 space-y-1">
+                                                    {order.items.map((item: any, idx: number) => (
+                                                        <li key={idx}>
+                                                            {item.quantity}x {item.name} <span className="text-gray-400 text-xs">(₹{item.price})</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <DownloadInvoiceButton order={order} stamps={loyalty?.total_stamps || 0} />
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
