@@ -15,11 +15,11 @@ export function DownloadInvoiceButton({ order, stamps = 0 }: { order: any, stamp
             const element = invoiceRef.current;
 
             const opt = {
-                margin:       10,
+                margin:       0,
                 filename:     `PlanetsSwaad-Invoice-${(order.id || '').split('-')[0]}.pdf`,
-                image:        { type: 'jpeg' as const, quality: 0.98 },
+                image:        { type: 'jpeg' as const, quality: 1 },
                 html2canvas:  { scale: 2, useCORS: true, windowWidth: 794 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+                jsPDF:        { unit: 'px', format: [794, 1123] as [number, number], orientation: 'portrait' as const }
             };
 
             await html2pdf().set(opt).from(element!).save();
@@ -44,7 +44,7 @@ export function DownloadInvoiceButton({ order, stamps = 0 }: { order: any, stamp
 
             {/* Off-screen Invoice Template - forces layout rendering without displaying it on screen */}
             <div className="absolute -left-[9999px] top-0 opacity-0 pointer-events-none">
-                <div ref={invoiceRef} className="w-[794px] bg-white p-10 font-sans text-gray-800">
+                <div ref={invoiceRef} className="w-[794px] h-[1123px] bg-white p-10 font-sans text-gray-800 flex flex-col mx-auto shrink-0 border-box">
                     
                     {/* Header: Logo and Details */}
                     <div className="flex flex-row justify-between items-start border-b-2 border-nature-500 pb-6 mb-8 w-full">
