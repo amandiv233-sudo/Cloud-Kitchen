@@ -77,6 +77,57 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Gamification & Subscriptions */}
+      <section className="py-20 bg-white px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          {/* 5-Day Gamification Banner */}
+          <div className="bg-nature-50 border-2 border-nature-200 rounded-3xl p-8 md:p-12 relative overflow-hidden group hover:border-nature-400 transition-all">
+            <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 transition-transform">
+              <span className="text-9xl">🎫</span>
+            </div>
+            <span className="inline-block px-3 py-1 bg-nature-800 text-white text-xs font-bold uppercase tracking-wider rounded-md mb-4">
+              Gamified Rewards
+            </span>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-nature-900 mb-4">The 5-Day Loyalty Ticket</h2>
+            <p className="text-nature-700 text-lg mb-6 leading-relaxed">
+              Order daily and collect PlanetsSwaad stamps! After your 5th order, unlock a massive discount code automatically.
+            </p>
+            <div className="bg-white p-4 rounded-xl border border-nature-100 flex items-start gap-4 shadow-sm">
+              <span className="text-2xl mt-1">💬</span>
+              <div>
+                <p className="text-nature-900 font-bold mb-1">WhatsApp Motivation</p>
+                <p className="text-sm text-nature-600 italic">"You're only 2 stamps away from your 50% discount! What's for dinner tonight?"</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Subscription / Weekly Plan Banner */}
+          <div className="bg-earth-100 border-2 border-earth-300 rounded-3xl p-8 md:p-12 relative overflow-hidden group hover:border-earth-400 transition-all">
+            <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 transition-transform">
+              <span className="text-9xl">🍱</span>
+            </div>
+            <span className="inline-block px-3 py-1 bg-earth-800 text-white text-xs font-bold uppercase tracking-wider rounded-md mb-4">
+              For Students & Pros
+            </span>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-nature-900 mb-4">Weekly Meal Plans</h2>
+            <p className="text-nature-700 text-lg mb-6 leading-relaxed">
+              Tired of deciding what to eat? Subscribe to our automated delivery! <strong className="text-nature-900">Pay for 6 days upfront, and get the 7th day absolutely FREE.</strong>
+            </p>
+            <div className="bg-white p-4 rounded-xl border border-earth-200 flex items-center justify-between shadow-sm">
+              <div>
+                <p className="text-nature-900 font-bold">Locks in your discount 🔒</p>
+                <p className="text-sm text-nature-600">Guaranteed hot food for your whole week.</p>
+              </div>
+              <Link href="/menu" className="px-4 py-2 bg-earth-800 text-white rounded-lg text-sm font-bold hover:bg-earth-700">
+                Subscribe
+              </Link>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* Trust Badges / Footer Info */}
       <section className="bg-nature-900 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
@@ -101,6 +152,13 @@ export default function HomePage() {
             <h4 className="text-xl font-bold">Student Friendly</h4>
             <p className="text-nature-300">Pocket-friendly combos and meal boxes designed specifically for daily student lives.</p>
           </div>
+        </div>
+
+        {/* Hyper-Local SEO Keywords Section (Subdued for design, highly visible for crawlers) */}
+        <div className="max-w-7xl mx-auto border-t border-nature-800 mt-16 pt-8 text-[10px] text-nature-500/40 text-justify leading-tight">
+          <p>
+            <strong>PlanetsSwaad - Your Local Food Partner in Bhagalpur:</strong> Best Pizza delivery in Tilkamanji • Healthy meals in Bhagalpur • Order food online Bhagalpur • Best fast food Nathnagar • Cloud kitchen near Zero Mile • Pure veg restaurant Bhagalpur • Tiffin service Tilkamanji • Burger delivery Sabour • Best biryani in Bhagalpur • Affordable meals for students Bhagalpur Bihar • Late night food delivery Bhagalpur • Fresh meal subscription Bhagalpur • Top rated cloud kitchen Bihar • Online thali delivery • Office lunch delivery Bhagalpur • Bhagalpur famous food online • Cheap fast food near TMBU • Veg combo meals Bhagalpur • Best pasta in Tilkamanji • Hot food delivery Adampur • Family dinner delivery • Party orders Bhagalpur cloud kitchen • Best momos home delivery • Premium vegetarian food Bhagalpur • Weekly student meal plan Bihar • Order paneer dishes online • Chinese food delivery Tilkamanji • Order North Indian curries • Tandoori roti delivery • Hygiene certified cloud kitchen • Quick bite delivery Nathnagar • Healthy dinner subscription zero mile • Zero mile food delivery • Best cafe delivery Bhagalpur • Affordable student tiffin • Office food box delivery • Fast sandwich delivery • Bhagalpur night cravings • Top Zomato alternative Bhagalpur • Best homemade style food delivery • Best fast food restaurant Tilkamanji • Best local delivery app Bhagalpur • Premium quality pizza delivery • Fresh salads delivery Bhagalpur • No minimum order food delivery • Quick food delivery near me • Best vegetarian restaurant delivery • Bhagalpur street food online.
+          </p>
         </div>
       </section>
     </div>
