@@ -184,6 +184,24 @@ export function CartDrawer() {
                     data: { url: '/profile' },
                 });
 
+                // --- WhatsApp Automated Push to Admin ---
+                // Generates the customer's text locally and opens WhatsApp on their device targeting admin
+                const whatsappMsg = `*New Order from PlanetsSwaad!* 🚀\n` +
+                    `*Order ID:* #${orderData.id.split('-')[0]}\n` +
+                    `*Payment Method:* ${paymentMethod === 'online' ? 'Paid Online (' + finalPaymentId + ')' : 'Cash on Delivery'}\n\n` +
+                    `*Customer Details:*\n` +
+                    `Name: ${fullName}\n` +
+                    `Phone: ${phone}\n` +
+                    `Address: ${address}\n\n` +
+                    `*Order Items:*\n` +
+                    items.map(i => `• ${i.quantity}x ${i.name} — ₹${i.price * i.quantity}`).join('\n') + `\n\n` +
+                    `*Total Bill:* ₹${getTotal()}\n\n` +
+                    `Please confirm my order.`;
+
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=919110922303&text=${encodeURIComponent(whatsappMsg)}`;
+                window.open(whatsappUrl, '_blank');
+                // ----------------------------------------
+
                 clearCart();
                 setIsOpen(false);
                 setAddress('');
