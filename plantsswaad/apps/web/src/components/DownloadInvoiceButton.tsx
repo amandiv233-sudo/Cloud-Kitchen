@@ -47,122 +47,151 @@ export function DownloadInvoiceButton({ order, stamps = 0 }: { order: any, stamp
                 <div ref={invoiceRef} className="w-[794px] bg-white p-10 font-sans text-gray-800">
                     
                     {/* Header: Logo and Details */}
-                    <div className="flex justify-between items-start border-b-2 border-nature-500 pb-6 mb-8">
-                        <div>
-                            <h1 className="text-4xl font-display font-bold text-nature-800 tracking-tight">PlanetsSwaad <span className="text-3xl">🍃</span></h1>
-                            <p className="text-nature-600 italic mt-1 text-sm">"Swad Jo Dil Ko Chhoo Jaye"</p>
-                            <p className="text-gray-500 text-sm mt-3">Bhagalpur, Bihar — 812001</p>
+                    <div className="flex flex-row justify-between items-start border-b-2 border-nature-500 pb-6 mb-8 w-full">
+                        <div className="flex-1">
+                            <h1 className="text-5xl font-display font-bold text-nature-800 tracking-tight flex items-center gap-2">
+                                PlanetsSwaad <span className="text-4xl">🍃</span>
+                            </h1>
+                            <p className="text-nature-600 italic mt-2 text-sm">"Swad Jo Dil Ko Chhoo Jaye"</p>
+                            <p className="text-gray-500 text-sm mt-4">Bhagalpur, Bihar — 812001</p>
                             <p className="text-gray-500 text-sm">GSTIN: 10AXCXXXX000Z1</p>
                         </div>
-                        <div className="text-right">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-2">INVOICE</h2>
-                            <p className="text-sm"><span className="font-semibold text-gray-600">Order ID:</span> #{order?.id?.split('-')[0]}</p>
-                            <p className="text-sm"><span className="font-semibold text-gray-600">Date:</span> {new Date(order?.created_at || Date.now()).toLocaleDateString('en-IN')}</p>
-                            <span className="inline-block mt-3 px-3 py-1 bg-green-100 text-green-800 font-bold text-xs rounded-md border border-green-300">
-                                PAID
-                            </span>
+                        <div className="text-right flex-1 pt-1">
+                            <h2 className="text-3xl font-bold text-gray-800 mb-3 tracking-widest uppercase">INVOICE</h2>
+                            <p className="text-sm mb-1 text-gray-800">
+                                <span className="font-semibold text-gray-500 mr-2">Order ID:</span> 
+                                <span className="font-mono bg-gray-100 px-1 py-0.5 rounded">#{order?.id?.split('-')[0]?.toUpperCase()}</span>
+                            </p>
+                            <p className="text-sm text-gray-800">
+                                <span className="font-semibold text-gray-500 mr-2">Date:</span> 
+                                {new Date(order?.created_at || Date.now()).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            </p>
+                            <div className="mt-4">
+                                <span className="inline-block px-4 py-1.5 bg-green-100 text-green-800 font-bold text-xs rounded-md border border-green-300 tracking-wider">
+                                    PAID
+                                </span>
+                            </div>
                         </div>
                     </div>
 
                     {/* Customer Info */}
-                    <div className="mb-10 p-5 bg-nature-50 rounded-xl border border-nature-100">
+                    <div className="mb-10 p-5 bg-nature-50 rounded-xl border border-nature-100 w-full">
                         <h3 className="text-sm font-bold text-nature-800 uppercase tracking-widest mb-3">Billed To:</h3>
-                        <p className="font-semibold text-lg text-gray-900">{order?.delivery_address?.recipient || 'Customer'}</p>
-                        <p className="text-gray-600 mt-1 max-w-sm">{order?.delivery_address?.full_address || 'N/A'}</p>
-                        <p className="text-gray-600 mt-1">📞 +91 {order?.delivery_address?.phone || 'N/A'}</p>
+                        <p className="font-bold text-lg text-gray-900">{order?.delivery_address?.recipient || 'Customer'}</p>
+                        <p className="text-gray-700 mt-1 max-w-sm leading-relaxed">{order?.delivery_address?.full_address || 'N/A'}</p>
+                        <p className="text-gray-700 mt-2 font-medium flex items-center gap-2">
+                            <span>📞</span> 
+                            {order?.delivery_address?.phone ? `+91 ${order.delivery_address.phone}` : 'N/A'}
+                        </p>
                     </div>
 
                     {/* Items Table */}
-                    <table className="w-full text-left mb-10 border-collapse">
+                    <table className="w-full text-left mb-6 border-collapse font-sans table-fixed">
                         <thead>
-                            <tr className="border-b-2 border-gray-200">
-                                <th className="py-3 px-2 text-nature-800 font-bold uppercase text-sm tracking-wider w-1/2">Item Description</th>
-                                <th className="py-3 px-2 text-nature-800 font-bold uppercase text-sm tracking-wider text-center">Qty</th>
-                                <th className="py-3 px-2 text-nature-800 font-bold uppercase text-sm tracking-wider text-right">Price</th>
-                                <th className="py-3 px-2 text-nature-800 font-bold uppercase text-sm tracking-wider text-right">Amount</th>
+                            <tr className="border-b-2 border-gray-300 text-nature-800">
+                                <th className="py-3 px-2 font-bold uppercase text-xs tracking-wider w-1/2">Item Description</th>
+                                <th className="py-3 px-2 font-bold uppercase text-xs tracking-wider text-center w-[15%]">Qty</th>
+                                <th className="py-3 px-2 font-bold uppercase text-xs tracking-wider text-right w-[15%]">Price</th>
+                                <th className="py-3 px-2 font-bold uppercase text-xs tracking-wider text-right w-[20%]">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {order?.items?.map((item: any, i: number) => (
-                                <tr key={i} className="border-b border-gray-100">
-                                    <td className="py-4 px-2">
-                                        <p className="font-medium text-gray-900">{item.name}</p>
-                                    </td>
-                                    <td className="py-4 px-2 text-center text-gray-700">{item.quantity}</td>
-                                    <td className="py-4 px-2 text-right text-gray-700">₹{item.price}</td>
-                                    <td className="py-4 px-2 text-right font-bold text-gray-900">₹{item.price * item.quantity}</td>
-                                </tr>
-                            ))}
+                            {order?.items?.map((item: any, i: number) => {
+                                const qty = Number(item.quantity) || 1;
+                                const price = Number(item.price) || 0;
+                                const amount = qty * price;
+                                return (
+                                    <tr key={i} className="border-b border-gray-100">
+                                        <td className="py-4 px-2">
+                                            <p className="font-semibold text-gray-900 text-sm">{item.name}</p>
+                                        </td>
+                                        <td className="py-4 px-2 text-center text-gray-700 text-sm">{qty}</td>
+                                        <td className="py-4 px-2 text-right text-gray-700 text-sm">₹{price.toFixed(2)}</td>
+                                        <td className="py-4 px-2 text-right font-bold text-gray-900 text-sm">₹{amount.toFixed(2)}</td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
 
                     {/* Totals */}
-                    <div className="flex justify-end mb-12">
-                        <div className="w-1/3">
-                            <div className="flex justify-between py-2 border-b border-gray-100">
-                                <span className="text-gray-600">Subtotal</span>
-                                <span className="font-medium">₹{order?.total_amount}</span>
+                    <div className="flex justify-end mb-12 w-full">
+                        <div className="w-[40%] pl-6">
+                            <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
+                                <span className="text-gray-600 font-medium">Subtotal</span>
+                                <span className="font-semibold text-gray-900">₹{(Number(order?.total_amount) || 0).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between py-2 border-b border-gray-100">
-                                <span className="text-gray-600">GST (5%)</span>
-                                <span className="font-medium">Inclusive</span>
+                            <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
+                                <span className="text-gray-600 font-medium">GST (5%)</span>
+                                <span className="font-semibold text-gray-900">Inclusive</span>
                             </div>
-                            <div className="flex justify-between py-2 border-b border-gray-100">
-                                <span className="text-gray-600">Delivery</span>
-                                <span className="font-medium text-green-600">Free</span>
+                            <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
+                                <span className="text-gray-600 font-medium">Delivery</span>
+                                <span className="font-semibold text-green-600">₹0.00 (Free)</span>
                             </div>
                             <div className="flex justify-between py-4 mt-2 border-t-2 border-nature-800 text-xl font-bold">
-                                <span className="text-nature-900">Total</span>
-                                <span className="text-nature-900">₹{order?.total_amount}</span>
+                                <span className="text-nature-900 tracking-wide uppercase">Total</span>
+                                <span className="text-nature-900 tracking-widest">₹{(Number(order?.total_amount) || 0).toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
 
                     {/* 5-Day Loyalty Ticket Visual */}
-                    <div className="border-2 border-dashed border-earth-300 bg-earth-50 rounded-2xl p-6 mb-10 flex items-center justify-between">
-                        <div className="w-1/3">
-                            <h3 className="font-display font-bold text-earth-800 text-xl mb-1">Loyalty Ticket 🎟️</h3>
-                            <p className="text-xs text-earth-600 mb-2">
-                                ✅ 5 consecutive days = <strong>50% OFF</strong>!<br/>
-                                ✅ 5 non-consecutive days = <strong>20% OFF</strong>!
-                            </p>
-                            <p className="text-[10px] text-earth-500 italic">One stamp per day. Stamps rest after reward.</p>
-                        </div>
+                    <div className="border border-nature-300 bg-nature-50/50 rounded-2xl p-6 mb-10 flex flex-col items-center text-center w-full">
+                        <h3 className="font-display font-bold text-nature-800 text-2xl mb-1 flex items-center gap-2">
+                            Loyalty Ticket 🎟️
+                        </h3>
+                        <p className="text-sm text-nature-700 mb-2 font-medium">
+                            Collect 5 Stamps! Get a special deal on your next order! 🎁
+                        </p>
+                        <p className="text-xs text-nature-600 mb-6 max-w-lg leading-relaxed">
+                            One official PlanetsSwaad stamp is added to this ticket for each unique order placed on a different day. Earn all 5 to unlock a major offer!
+                        </p>
                         
                         {/* 5 Stamp Slots */}
-                        <div className="flex gap-3">
+                        <div className="flex gap-4 mb-4">
                             {[1, 2, 3, 4, 5].map((slot) => {
                                 const isStamped = slot <= stamps;
                                 return (
                                     <div 
                                         key={slot} 
-                                        className={`w-14 h-14 rounded-full flex items-center justify-center border-2 border-earth-400 ${isStamped ? 'bg-earth-200' : 'bg-white border-dashed'}`}
+                                        className={`w-16 h-16 rounded-full flex items-center justify-center border-[3px] shadow-sm relative overflow-hidden transition-all duration-300 ${isStamped ? 'border-nature-600 bg-nature-50' : 'bg-white border-dashed border-gray-300'}`}
                                     >
                                         {isStamped ? (
-                                            <span className="text-2xl opacity-80" style={{ transform: `rotate(${Math.random() * 30 - 15}deg)` }}>
-                                                🍃
-                                            </span>
+                                            <div className="absolute inset-0 flex flex-col justify-center items-center text-nature-700 opacity-90" style={{ transform: `rotate(${Math.random() * 20 - 10}deg)` }}>
+                                                <span className="text-2xl leading-none">🍃</span>
+                                                <span className="text-[8px] font-bold uppercase tracking-widest mt-0.5 border-t border-nature-400 pt-0.5">Verified</span>
+                                            </div>
                                         ) : (
-                                            <span className="text-earth-300 text-xs font-bold">{slot}</span>
+                                            <span className="text-gray-300 text-sm font-bold">{slot}</span>
                                         )}
                                     </div>
                                 );
                             })}
                         </div>
+                        <p className="text-[10px] text-gray-500 italic mt-2 uppercase tracking-wide">
+                            * Stamps reset after the 5th stamp is earned and a reward is claimed.
+                        </p>
+                        {stamps === 5 && (
+                            <p className="mt-4 px-4 py-2 bg-nature-800 text-white rounded-lg text-sm font-bold tracking-wider">
+                                Ticket Complete! Check your email/SMS for your reward code!
+                            </p>
+                        )}
                     </div>
 
                     {/* Footer */}
-                    <div className="flex justify-between items-end pt-10 border-t border-gray-200">
+                    <div className="flex justify-between items-center pt-8 border-t-2 border-gray-200 mt-auto">
                         <div>
-                            <p className="text-nature-800 font-bold mb-1">Handcrafted with Love from the Planets</p>
-                            <p className="text-xs text-gray-500">For issues or feedback, scan the QR or email us at amandiv2345@gmail.com</p>
+                            <p className="text-nature-900 font-bold text-lg mb-1 tracking-tight">Handcrafted with Love from the Planets</p>
+                            <p className="text-xs text-gray-600 mt-2 font-medium">Thank you for choosing PlanetsSwaad! 🌍💖</p>
+                            <p className="text-xs text-gray-500 mt-1">For issues or feedback, scan the QR or email us at amandiv2345@gmail.com</p>
                         </div>
-                        <div>
-                            {/* QR Code linking to support/menu */}
+                        <div className="p-2 bg-white rounded-xl shadow-sm border border-gray-100 flex-shrink-0">
+                            {/* Enlarged QR Code linking to support/menu */}
                             <QRCodeSVG 
-                                value={`https://planetsswaad.netlify.app/order-support/${order?.id}`} 
-                                size={70} 
-                                fgColor="#1e3d33" 
+                                value={`https://planetsswaad.netlify.app/order-support/${order?.id || 'none'}`} 
+                                size={90} 
+                                fgColor="#2b5b49" 
                             />
                         </div>
                     </div>

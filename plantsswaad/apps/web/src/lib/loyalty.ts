@@ -2,11 +2,10 @@ import { supabase } from './supabase';
 
 /**
  * Validates and updates a user's loyalty stamps based on their new order.
- * Awards a 50% discount for 5 consecutive days, or a 20% discount for 5 total unique days.
+ * Awards a discount code when 5 total unique days have stamps.
  */
 export async function processOrderLoyalty(userId: string) {
     const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
     const sb = supabase as any;
 
     // Read current loyalty record
@@ -36,33 +35,22 @@ export async function processOrderLoyalty(userId: string) {
         return { stampEarned: false, reward: null, currentStamps: tracker.total_stamps, currentStreak: tracker.consecutive_streak };
     }
 
-    let newStreak = tracker.last_order_date === yesterday ? tracker.consecutive_streak + 1 : 1;
     let newTotal = tracker.total_stamps + 1;
     let reward = null;
 
-    // Check thresholds: 5 consecutive -> 50% reward
-    if (newStreak === 5) {
+    // Check thresholds: 5 total stamps -> Major reward
+    if (newTotal === 5) {
         reward = { 
-            code: `PLANET_HERO_${Math.random().toString(36).substring(2, 6).toUpperCase()}`, 
+            code: `PSHERO50_${Math.random().toString(36).substring(2, 6).toUpperCase()}`, 
             percentage: 50 
         };
-        newStreak = 0;
-        newTotal = 0;
-    } 
-    // 5 total non-consecutive -> 20% reward
-    else if (newTotal === 5) {
-        reward = { 
-            code: `PLANET_LOYAL_${Math.random().toString(36).substring(2, 6).toUpperCase()}`, 
-            percentage: 20 
-        };
-        newStreak = 0;
-        newTotal = 0;
+        newTotal = 0; // Reset upon earning
     }
 
     // Update their tracker
     await sb.from('loyalty_tracker').update({
         total_stamps: newTotal,
-        consecutive_streak: newStreak,
+        consecutive_streak: newTotal, // keeping streak identical to total so schema doesn't break
         last_order_date: today,
         updated_at: new Date().toISOString()
     }).eq('user_id', userId);
@@ -75,9 +63,12 @@ export async function processOrderLoyalty(userId: string) {
             discount_percentage: reward.percentage,
             expires_at: new Date(Date.now() + 30 * 86400000).toISOString() // Valid 30 days
         });
+        
+        // In a real app, trigger an email or SMS here
+        console.log(`[Loyalty Webhook] Dispatch SMS/Email to user with code ${reward.code}`);
     }
 
-    return { stampEarned: true, reward, currentStamps: newTotal, currentStreak: newStreak };
+    return { stampEarned: true, reward, currentStamps: newTotal, currentStreak: newTotal };
 }
 
 export async function fetchUserLoyaltyInfo(userId: string) {

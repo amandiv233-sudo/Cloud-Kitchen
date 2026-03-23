@@ -165,37 +165,41 @@ export default function ProfilePage() {
 
                         {/* Loyalty Ticket Display */}
                         {loyalty && (
-                            <div className="mt-8 border-2 border-dashed border-earth-300 bg-earth-50 rounded-2xl p-5 mb-10 text-center">
-                                <h3 className="font-display font-bold text-earth-800 text-lg mb-1">Loyalty Ticket 🎟️</h3>
-                                <p className="text-xs text-earth-600 mb-4 max-w-xs mx-auto">
-                                    5 consecutive days = <strong className="text-earth-800">50% OFF</strong><br/>
-                                    5 total days = <strong className="text-earth-800">20% OFF</strong>
+                            <div className="mt-8 border border-nature-300 bg-nature-50/50 rounded-2xl p-6 mb-10 flex flex-col items-center text-center">
+                                <h3 className="font-display font-bold text-nature-800 text-2xl mb-1 flex items-center gap-2">
+                                    Loyalty Ticket 🎟️
+                                </h3>
+                                <p className="text-sm text-nature-700 mb-2 font-medium">
+                                    Collect 5 Stamps! Get a special deal on your next order! 🎁
+                                </p>
+                                <p className="text-xs text-nature-600 mb-6 max-w-lg leading-relaxed">
+                                    One official PlanetsSwaad stamp is added to this ticket for each unique order placed on a different day. Earn all 5 to unlock a major offer!
                                 </p>
                                 
-                                {/* Total Slots (Non-consecutive fallback) */}
-                                <div className="flex gap-2 justify-center">
+                                {/* Total Slots */}
+                                <div className="flex gap-4">
                                     {[1, 2, 3, 4, 5].map((slot) => {
                                         const isStamped = slot <= loyalty.total_stamps;
-                                        const isStreak = slot <= loyalty.consecutive_streak;
                                         return (
                                             <div 
                                                 key={slot} 
-                                                className={`w-12 h-12 rounded-full flex items-center justify-center border-2 shadow-sm 
-                                                    ${isStreak ? 'bg-green-500 border-green-600 text-white shadow-green-500/30' : 
-                                                    isStamped ? 'bg-earth-200 border-earth-400 text-earth-800' : 'bg-white border-dashed border-earth-300'}`}
+                                                className={`w-16 h-16 rounded-full flex items-center justify-center border-[3px] shadow-sm relative overflow-hidden transition-all duration-300 ${isStamped ? 'border-nature-600 bg-nature-50' : 'bg-white border-dashed border-gray-300'}`}
                                             >
                                                 {isStamped ? (
-                                                    <span className="text-xl opacity-90" style={{ transform: `rotate(${Math.random() * 30 - 15}deg)` }}>
-                                                        🍃
-                                                    </span>
+                                                    <div className="absolute inset-0 flex flex-col justify-center items-center text-nature-700 opacity-90" style={{ transform: `rotate(${Math.random() * 20 - 10}deg)` }}>
+                                                        <span className="text-2xl leading-none">🍃</span>
+                                                        <span className="text-[8px] font-bold uppercase tracking-widest mt-0.5 border-t border-nature-400 pt-0.5">Verified</span>
+                                                    </div>
                                                 ) : (
-                                                    <span className="text-earth-300 text-xs font-bold">{slot}</span>
+                                                    <span className="text-gray-300 text-sm font-bold">{slot}</span>
                                                 )}
                                             </div>
                                         );
                                     })}
                                 </div>
-                                <p className="text-[10px] text-earth-500 mt-4 italic">Dark green = Active Streak. Order today to keep it alive!</p>
+                                <p className="text-[10px] text-gray-500 italic mt-4 uppercase tracking-wide">
+                                    * Stamps reset after the 5th stamp is earned and a reward is claimed.
+                                </p>
                             </div>
                         )}
                     </div>
