@@ -146,7 +146,7 @@ export function CartDrawer() {
             // 4. Handle Payment Route
             try {
                 let finalPaymentId = `COD_${orderData.id.split('-')[0]}`;
-                
+
                 if (paymentMethod === 'online') {
                     const paymentResult = await openRazorpayPopup(orderData.id, getTotal());
                     finalPaymentId = paymentResult.paymentId;
@@ -163,10 +163,10 @@ export function CartDrawer() {
 
                 // Process Loyalty Validation
                 const loyaltyResult = await processOrderLoyalty(session.user.id);
-                const rewardText = loyaltyResult?.reward 
-                    ? `\n🎉 LOYALTY REWARD UNLOCKED: ${loyaltyResult.reward.percentage}% OFF!\nUse code ${loyaltyResult.reward.code} on your next order.` 
-                    : loyaltyResult?.stampEarned 
-                        ? `\n🎟️ You earned a Loyalty Stamp today! (Stamps: ${loyaltyResult.currentStamps}, Streak: ${loyaltyResult.currentStreak})` 
+                const rewardText = loyaltyResult?.reward
+                    ? `\n🎉 LOYALTY REWARD UNLOCKED: ${loyaltyResult.reward.percentage}% OFF!\nUse code ${loyaltyResult.reward.code} on your next order.`
+                    : loyaltyResult?.stampEarned
+                        ? `\n🎟️ You earned a Loyalty Stamp today! (Stamps: ${loyaltyResult.currentStamps}, Streak: ${loyaltyResult.currentStreak})`
                         : '';
 
                 alert(
@@ -198,7 +198,7 @@ export function CartDrawer() {
                     `*Total Bill:* ₹${getTotal()}\n\n` +
                     `Please confirm my order.`;
 
-                const whatsappUrl = `https://api.whatsapp.com/send?phone=919110922303&text=${encodeURIComponent(whatsappMsg)}`;
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=917061545199&text=${encodeURIComponent(whatsappMsg)}`;
                 window.open(whatsappUrl, '_blank');
                 // ----------------------------------------
 
@@ -373,7 +373,7 @@ export function CartDrawer() {
                                 <>
                                     <span>{paymentMethod === 'cod' ? `Place Order (₹${getTotal()})` : `Pay ₹${getTotal()} via Razorpay`}</span>
                                     {paymentMethod === 'online' ? (
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                                     ) : (
                                         <span className="text-xl leading-none">🛵</span>
                                     )}
