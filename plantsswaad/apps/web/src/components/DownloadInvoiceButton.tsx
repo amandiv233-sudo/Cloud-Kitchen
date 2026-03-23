@@ -18,7 +18,7 @@ export function DownloadInvoiceButton({ order, stamps = 0 }: { order: any, stamp
                 margin:       10,
                 filename:     `PlanetsSwaad-Invoice-${(order.id || '').split('-')[0]}.pdf`,
                 image:        { type: 'jpeg' as const, quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
+                html2canvas:  { scale: 2, useCORS: true, windowWidth: 794 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
             };
 
@@ -42,9 +42,9 @@ export function DownloadInvoiceButton({ order, stamps = 0 }: { order: any, stamp
                 {isGenerating ? 'Generating PDF...' : 'Download Invoice'}
             </button>
 
-            {/* Hidden Invoice Template - specifically styled for A4 exact dimensions */}
-            <div className="hidden">
-                <div ref={invoiceRef} className="w-[800px] bg-white p-10 font-sans text-gray-800" style={{ minHeight: '1120px' }}>
+            {/* Off-screen Invoice Template - forces layout rendering without displaying it on screen */}
+            <div className="absolute -left-[9999px] top-0 opacity-0 pointer-events-none">
+                <div ref={invoiceRef} className="w-[794px] bg-white p-10 font-sans text-gray-800">
                     
                     {/* Header: Logo and Details */}
                     <div className="flex justify-between items-start border-b-2 border-nature-500 pb-6 mb-8">
