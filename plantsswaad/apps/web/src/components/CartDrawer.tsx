@@ -22,6 +22,7 @@ export function CartDrawer() {
     const [fullName, setFullName] = useState('');
     const [phone, setPhone] = useState('');
     const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState<'online' | 'cod'>('online');
     const { sendLocalNotification } = useNotifications();
     const router = useRouter();
 
@@ -142,16 +143,21 @@ export function CartDrawer() {
 
             if (orderError) throw orderError;
 
-            // 4. Open Razorpay payment popup
+            // 4. Handle Payment Route
             try {
-                const paymentResult = await openRazorpayPopup(orderData.id, getTotal());
+                let finalPaymentId = `COD_${orderData.id.split('-')[0]}`;
+                
+                if (paymentMethod === 'online') {
+                    const paymentResult = await openRazorpayPopup(orderData.id, getTotal());
+                    finalPaymentId = paymentResult.paymentId;
+                }
 
-                // 5. Payment successful — update order in Supabase
+                // 5. Order successfully confirmed (either COD placed or Paid via Razorpay)
                 await supabase
                     .from('orders')
                     .update({
-                        payment_status: 'Paid',
-                        payment_id: paymentResult.paymentId,
+                        payment_status: paymentMethod === 'online' ? 'Paid' : 'Pending',
+                        payment_id: finalPaymentId,
                     })
                     .eq('id', orderData.id);
 
@@ -164,10 +170,10 @@ export function CartDrawer() {
                         : '';
 
                 alert(
-                    `✅ Payment Successful!\n` +
+                    `✅ Order Placed Successfully!\n` +
                     `Order ID: ${orderData.id.split('-')[0]}\n` +
-                    `Payment ID: ${paymentResult.paymentId}\n` +
-                    `Total Paid: ₹${getTotal()}` +
+                    `Payment Method: ${paymentMethod === 'online' ? 'Razorpay (' + finalPaymentId + ')' : 'Cash on Delivery'}\n` +
+                    `Total Amount: ₹${getTotal()}` +
                     rewardText
                 );
 
@@ -313,6 +319,26 @@ export function CartDrawer() {
                                     placeholder="Enter full address or landmark"
                                 />
                             </div>
+
+                            <div className="pt-2 border-t border-earth-100">
+                                <label className="block text-sm font-medium text-earth-700 mb-2">Payment Method</label>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        onClick={() => setPaymentMethod('online')}
+                                        className={`p-3 rounded-lg border flex flex-col items-center justify-center gap-1 transition-all ${paymentMethod === 'online' ? 'border-nature-600 bg-nature-50 text-nature-800 ring-1 ring-nature-600 shadow-sm' : 'border-earth-200 text-earth-600 hover:bg-earth-50'}`}
+                                    >
+                                        <span className="text-xl">💳</span>
+                                        <span className="text-sm font-bold">Pay Online</span>
+                                    </button>
+                                    <button
+                                        onClick={() => setPaymentMethod('cod')}
+                                        className={`p-3 rounded-lg border flex flex-col items-center justify-center gap-1 transition-all ${paymentMethod === 'cod' ? 'border-nature-600 bg-nature-50 text-nature-800 ring-1 ring-nature-600 shadow-sm' : 'border-earth-200 text-earth-600 hover:bg-earth-50'}`}
+                                    >
+                                        <span className="text-xl">💵</span>
+                                        <span className="text-sm font-bold text-center leading-tight">Pay on Delivery</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div className="flex justify-between items-center mb-6 text-xl font-bold text-earth-900">
                             <span>Total Amount:</span>
@@ -324,11 +350,15 @@ export function CartDrawer() {
                             className="w-full py-4 bg-nature-600 hover:bg-nature-700 disabled:bg-nature-300 text-white rounded-xl font-bold text-lg transition-colors flex justify-center items-center gap-2"
                         >
                             {isCheckingOut ? (
-                                <span className="animate-pulse">Processing Payment...</span>
+                                <span className="animate-pulse">Processing...</span>
                             ) : (
                                 <>
-                                    <span>Pay ₹{getTotal()} via Razorpay</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                    <span>{paymentMethod === 'cod' ? `Place Order (₹${getTotal()})` : `Pay ₹${getTotal()} via Razorpay`}</span>
+                                    {paymentMethod === 'online' ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                    ) : (
+                                        <span className="text-xl leading-none">🛵</span>
+                                    )}
                                 </>
                             )}
                         </button>
