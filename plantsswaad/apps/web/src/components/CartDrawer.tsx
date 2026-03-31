@@ -208,7 +208,7 @@ export function CartDrawer() {
                 setPhone('');
 
                 // Use replace to ensure their browser "back" button leads to their fresh profile instead of checking out again
-                router.replace('/profile');
+                router.replace('/success');
 
                 // 100% reliable bypass for popup blockers (happening after an async stack): 
                 // Directly navigate the current tab utilizing intent links, after a micro-delay.
