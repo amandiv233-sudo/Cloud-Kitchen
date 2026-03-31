@@ -23,18 +23,18 @@ const areaJsonLd = {
 };
 
 const areas = [
-  { name: 'Nathnagar', emoji: '🏘️', desc: 'Express delivery in 25–35 mins' },
-  { name: 'Adampur', emoji: '🏡', desc: 'Fast delivery to all sectors' },
-  { name: 'Barari', emoji: '🌳', desc: 'Available all day 9 AM–11 PM' },
-  { name: 'Sabour', emoji: '🎓', desc: 'Special student tiffin plans' },
-  { name: 'Champanagar', emoji: '🏢', desc: 'Office lunch delivery available' },
-  { name: 'TDC College Area', emoji: '📚', desc: 'Campus-friendly combos' },
-  { name: 'Tilkamanjhi', emoji: '🛣️', desc: 'City-centre fast delivery' },
-  { name: 'Tatarpur', emoji: '🏙️', desc: 'Residential delivery available' },
-  { name: 'Mayaganj', emoji: '🏥', desc: 'Near hospital zone delivery' },
-  { name: 'Bhagalpur City Centre', emoji: '🌆', desc: 'Prime zone — fastest delivery' },
-  { name: 'Khalifabag', emoji: '🏠', desc: 'Home delivery across area' },
-  { name: 'Mirjanhat', emoji: '🛵', desc: 'Full area coverage' },
+  { name: 'Nathnagar', emoji: '🏘️', desc: 'Fastest fast food & thali delivery in Nathnagar. Enjoy pure veg meals delivered hot in 25–35 mins.' },
+  { name: 'Tilkamanjhi', emoji: '🛣️', desc: 'Top-rated pizza, pasta, and biryani delivery across Tilkamanjhi area. City-centre fast delivery.' },
+  { name: 'Zero Mile', emoji: '📍', desc: 'Healthy dinner subscriptions and cloud kitchen delivery near Zero Mile and surrounding areas.' },
+  { name: 'Adampur', emoji: '🏡', desc: 'Hot, fresh food delivery to all residential sectors of Adampur. Perfect for family dinners.' },
+  { name: 'Sabour', emoji: '🎓', desc: 'Special student tiffin plans, fast food & burger delivery near Sabour colleges.' },
+  { name: 'TMBU Area', emoji: '📚', desc: 'Affordable meals for students, late-night campus delivery and cheap fast food near TMBU.' },
+  { name: 'Barari', emoji: '🌳', desc: '100% pure veg North Indian curries and combo meals available all day 9 AM–11 PM in Barari.' },
+  { name: 'Champanagar', emoji: '🏢', desc: 'Office lunch box delivery and daily catering available fast and fresh in Champanagar.' },
+  { name: 'Tatarpur', emoji: '🏙️', desc: 'Reliable residential home delivery for Chinese food and fresh meals across Tatarpur.' },
+  { name: 'Mayaganj', emoji: '🏥', desc: 'Hygienic, pure veg food delivery near hospital zone and Mayaganj.' },
+  { name: 'Bhagalpur City Centre', emoji: '🌆', desc: 'Prime zone. Our cloud kitchen ensures the fastest delivery for all Bhagalpur famous food online.' },
+  { name: 'Mirjanhat', emoji: '🛵', desc: 'Full area coverage for tandoori roti, paneer dishes, and quick bites in Mirjanhat.' },
 ];
 
 export default function AreasPage() {

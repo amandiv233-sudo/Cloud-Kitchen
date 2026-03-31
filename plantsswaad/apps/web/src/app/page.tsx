@@ -154,11 +154,41 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Hyper-Local SEO Keywords Section (Subdued for design, highly visible for crawlers) */}
-        <div className="max-w-7xl mx-auto border-t border-nature-800 mt-16 pt-8 text-[10px] text-nature-500/40 text-justify leading-tight">
-          <p>
-            <strong>PlanetsSwaad - Your Local Food Partner in Bhagalpur:</strong> Best Pizza delivery in Tilkamanji • Healthy meals in Bhagalpur • Order food online Bhagalpur • Best fast food Nathnagar • Cloud kitchen near Zero Mile • Pure veg restaurant Bhagalpur • Tiffin service Tilkamanji • Burger delivery Sabour • Best biryani in Bhagalpur • Affordable meals for students Bhagalpur Bihar • Late night food delivery Bhagalpur • Fresh meal subscription Bhagalpur • Top rated cloud kitchen Bihar • Online thali delivery • Office lunch delivery Bhagalpur • Bhagalpur famous food online • Cheap fast food near TMBU • Veg combo meals Bhagalpur • Best pasta in Tilkamanji • Hot food delivery Adampur • Family dinner delivery • Party orders Bhagalpur cloud kitchen • Best momos home delivery • Premium vegetarian food Bhagalpur • Weekly student meal plan Bihar • Order paneer dishes online • Chinese food delivery Tilkamanji • Order North Indian curries • Tandoori roti delivery • Hygiene certified cloud kitchen • Quick bite delivery Nathnagar • Healthy dinner subscription zero mile • Zero mile food delivery • Best cafe delivery Bhagalpur • Affordable student tiffin • Office food box delivery • Fast sandwich delivery • Bhagalpur night cravings • Top Zomato alternative Bhagalpur • Best homemade style food delivery • Best fast food restaurant Tilkamanji • Best local delivery app Bhagalpur • Premium quality pizza delivery • Fresh salads delivery Bhagalpur • No minimum order food delivery • Quick food delivery near me • Best vegetarian restaurant delivery • Bhagalpur street food online.
-          </p>
+        {/* Natural SEO & Local Content Section */}
+        <div className="max-w-7xl mx-auto border-t border-nature-800 mt-16 pt-12 md:pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-nature-300 text-sm">
+            <div>
+              <h5 className="text-white font-bold mb-4 text-lg">Top Delivery Areas</h5>
+              <ul className="space-y-2">
+                <li><Link href="/areas" className="hover:text-white transition-colors">Food Delivery in Tilkamanji</Link></li>
+                <li><Link href="/areas" className="hover:text-white transition-colors">Fast Food Nathnagar</Link></li>
+                <li><Link href="/areas" className="hover:text-white transition-colors">Cloud Kitchen Near Zero Mile</Link></li>
+                <li><Link href="/areas" className="hover:text-white transition-colors">Hot Food Delivery Adampur</Link></li>
+                <li><Link href="/areas" className="hover:text-white transition-colors">Burger Delivery Sabour</Link></li>
+                <li><Link href="/areas" className="hover:text-white transition-colors">Cheap Fast Food near TMBU</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="text-white font-bold mb-4 text-lg">Our Specialties</h5>
+              <ul className="space-y-2">
+                <li><Link href="/menu" className="hover:text-white transition-colors">Best Biryani in Bhagalpur</Link></li>
+                <li><Link href="/menu" className="hover:text-white transition-colors">Premium Vegetarian Food</Link></li>
+                <li><Link href="/menu" className="hover:text-white transition-colors">Online Thali Delivery</Link></li>
+                <li><Link href="/menu" className="hover:text-white transition-colors">Best Pizza & Pasta</Link></li>
+                <li><Link href="/menu" className="hover:text-white transition-colors">Chinese Food Delivery</Link></li>
+                <li><Link href="/menu" className="hover:text-white transition-colors">North Indian Curries</Link></li>
+              </ul>
+            </div>
+            <div className="lg:col-span-2">
+              <h5 className="text-white font-bold mb-4 text-lg">Your Local Food Partner in Bhagalpur</h5>
+              <p className="mb-4 leading-relaxed">
+                As a top-rated cloud kitchen in Bihar, PlanetsSwaad is dedicated to providing the best online food delivery experience across Bhagalpur. Whether you're looking for an affordable student tiffin, a fresh meal subscription, or late-night food delivery for your cravings, we've got you covered.
+              </p>
+              <p className="leading-relaxed">
+                We specialize in 100% pure veg, hygiene-certified meals including homemade style food delivery, healthy dinner subscriptions, and office lunch boxes. Order our famous veg combo meals, paneer dishes, or fresh salads online today with fast, reliable service direct to your door.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
