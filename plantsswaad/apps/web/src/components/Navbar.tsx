@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCartStore } from '@plantsswaad/shared';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ProfileButton } from '@/components/ProfileButton';
 
 const navLinks = [
@@ -24,9 +25,15 @@ export function Navbar() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-20">
                         <div className="flex items-center">
-                            <Link href="/" className="flex-shrink-0 flex items-center">
-                                <span className="text-xl md:text-2xl font-display font-bold text-nature-800">PlanetsSwaad</span>
-                                <span className="ml-1 md:ml-2 text-xl md:text-2xl">🍃</span>
+                            <Link href="/" className="flex-shrink-0 flex items-center py-2">
+                                <Image 
+                                    src="/logo.png" 
+                                    alt="PlanetsSwaad Logo" 
+                                    width={240} 
+                                    height={60} 
+                                    className="h-10 md:h-14 w-auto object-contain" 
+                                    priority 
+                                />
                             </Link>
                         </div>
 
